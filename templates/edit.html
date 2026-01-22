@@ -1,27 +1,31 @@
-<h2>編集</h2>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-<form method="post">
-  タイトル:
-  <input name="title" value="{{ content[1] }}"><br>
+<div class="phone">
+  <h2>編集</h2>
 
-  種別:
-  <select name="type">
-    <option {% if content[2]=='anime' %}selected{% endif %}>anime</option>
-    <option {% if content[2]=='game' %}selected{% endif %}>game</option>
-  </select><br>
+  <form method="post">
+    タイトル
+    <input name="title" value="{{ content[1] }}">
 
-  状態:
-  <select name="status">
-    <option {% if content[3]=='todo' %}selected{% endif %}>todo</option>
-    <option {% if content[3]=='doing' %}selected{% endif %}>doing</option>
-    <option {% if content[3]=='done' %}selected{% endif %}>done</option>
-  </select><br>
+    種別
+    <select name="type">
+      <option value="anime" {% if content[2] == 'anime' %}selected{% endif %}>anime</option>
+      <option value="game" {% if content[2] == 'game' %}selected{% endif %}>game</option>
+    </select>
 
-  評価:
-  <input type="number" name="rating" value="{{ content[4] }}"><br>
+    状態
+    <select name="status">
+      <option value="todo" {% if content[3] == 'todo' %}selected{% endif %}>todo</option>
+      <option value="doing" {% if content[3] == 'doing' %}selected{% endif %}>doing</option>
+      <option value="done" {% if content[3] == 'done' %}selected{% endif %}>done</option>
+    </select>
 
-  感想:<br>
-  <textarea name="comment">{{ content[5] }}</textarea><br>
+    評価
+    <input type="number" name="rating" value="{{ content[4] }}">
 
-  <button>更新</button>
-</form>
+    感想
+    <textarea name="comment">{{ content[5] }}</textarea>
+
+    <button>更新</button>
+  </form>
+</div>

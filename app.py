@@ -9,7 +9,7 @@ def get_db():
     return sqlite3.connect(DB_NAME)
 
 
-# ‰Šú‰»iƒe[ƒuƒ‹ì¬j
+# åˆæœŸåŒ–ï¼ˆãƒ†ãƒ¼ãƒ–ãƒ«ä½œæˆï¼‰
 with get_db() as conn:
     conn.execute("""
     CREATE TABLE IF NOT EXISTS contents (

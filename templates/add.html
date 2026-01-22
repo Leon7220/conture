@@ -1,27 +1,31 @@
-<h2>追加</h2>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-<form method="post">
-  タイトル:
-  <input name="title"><br>
+<div class="phone">
+  <h2>追加</h2>
 
-  種別:
-  <select name="type">
-    <option>anime</option>
-    <option>game</option>
-  </select><br>
+  <form method="post">
+    タイトル
+    <input name="title">
 
-  状態:
-  <select name="status">
-    <option>todo</option>
-    <option>doing</option>
-    <option>done</option>
-  </select><br>
+    種別
+    <select name="type">
+      <option>anime</option>
+      <option>game</option>
+    </select>
 
-  評価:
-  <input type="number" name="rating"><br>
+    状態
+    <select name="status">
+      <option>todo</option>
+      <option>doing</option>
+      <option>done</option>
+    </select>
 
-  感想:<br>
-  <textarea name="comment"></textarea><br>
+    評価
+    <input type="number" name="rating">
 
-  <button>追加</button>
-</form>
+    感想
+    <textarea name="comment"></textarea>
+
+    <button>追加</button>
+  </form>
+</div>
