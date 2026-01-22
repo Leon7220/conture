@@ -1,28 +1,45 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>視聴 / プレイ記録リマインダー</title>
+</head>
+<body>
 
-<div class="phone">
-  <h1>視聴・プレイ記録リマインダー</h1>
+<h1>視聴 / プレイ記録リマインダー</h1>
 
-  <a href="/add" class="add-btn">追加</a>
+<a href="/add">＋ 追加</a>
 
-  {% for c in contents %}
-  <div class="item">
-   <li>
-  {{ c.title }}（{{ c.type }}）[{{ c.status }}]<br>
+<ul>
+{% for c in contents %}
+    <li>
+        <strong>{{ c.title }}</strong>
+        （{{ c.type }}） [{{ c.status }}]
+        <br>
 
-  評価：
-  {% for i in range(c.rating) %}
-    ★
-  {% endfor %}
-  {% for i in range(5 - c.rating) %}
-    ☆
-  {% endfor %}
-  <br>
+        評価：
+        {% if c.rating %}
+            {% for i in range(c.rating) %}
+                ★
+            {% endfor %}
+            {% for i in range(5 - c.rating) %}
+                ☆
+            {% endfor %}
+        {% else %}
+            未評価
+        {% endif %}
+        <br>
 
-  <a href="/edit/{{ c.id }}">編集</a>
-  <a href="/delete/{{ c.id }}">削除</a>
-</li>
-    </div>
-  </div>
-  {% endfor %}
-</div>
+        {% if c.comment %}
+            感想：{{ c.comment }}
+            <br>
+        {% endif %}
+
+        <a href="/edit/{{ c.id }}">編集</a>
+        <a href="/delete/{{ c.id }}">削除</a>
+    </li>
+{% endfor %}
+</ul>
+
+</body>
+</html>
