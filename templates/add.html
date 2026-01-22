@@ -21,7 +21,15 @@
     </select>
 
     評価
-    <input type="number" name="rating">
+    <label>評価</label>
+<select name="rating" required>
+  <option value="1" {% if content.rating == 1 %}selected{% endif %}>★☆☆☆☆</option>
+  <option value="2" {% if content.rating == 2 %}selected{% endif %}>★★☆☆☆</option>
+  <option value="3" {% if content.rating == 3 %}selected{% endif %}>★★★☆☆</option>
+  <option value="4" {% if content.rating == 4 %}selected{% endif %}>★★★★☆</option>
+  <option value="5" {% if content.rating == 5 %}selected{% endif %}>★★★★★</option>
+</select>
+<br>
 
     感想
     <textarea name="comment"></textarea>
