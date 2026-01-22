@@ -1,20 +1,27 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 <div class="phone">
-  <h1>視聴・プレイ記録</h1>
+  <h1>視聴・プレイ記録リマインダー</h1>
 
   <a href="/add" class="add-btn">追加</a>
 
   {% for c in contents %}
   <div class="item">
-    <strong>{{ c[1] }}</strong><br>
-    {{ c[2] }} / {{ c[3] }}<br>
-    ★ {{ c[4] }}<br>
-    {{ c[5] }}
+   <li>
+  {{ c.title }}（{{ c.type }}）[{{ c.status }}]<br>
 
-    <div class="actions">
-      <a href="/edit/{{ c[0] }}" class="edit">編集</a>
-      <a href="/delete/{{ c[0] }}" class="delete">削除</a>
+  評価：
+  {% for i in range(c.rating) %}
+    ★
+  {% endfor %}
+  {% for i in range(5 - c.rating) %}
+    ☆
+  {% endfor %}
+  <br>
+
+  <a href="/edit/{{ c.id }}">編集</a>
+  <a href="/delete/{{ c.id }}">削除</a>
+</li>
     </div>
   </div>
   {% endfor %}
