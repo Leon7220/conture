@@ -1,12 +1,17 @@
-<h1>視聴 / プレイ記録</h1>
+<h1>視聴・プレイ記録リマインダー</h1>
+
 <a href="/add">追加</a>
+
 <ul>
 {% for c in contents %}
-<li>
-{{ c.title }} ({{ c.type }}) [{{ c.status }}]
-★{{ c.rating }}
-<a href="/edit/{{ c.id }}">編集</a>
-<a href="/delete/{{ c.id }}">削除</a>
-</li>
+  <li>
+    <strong>{{ c[1] }}</strong>
+    （{{ c[2] }} / {{ c[3] }}）
+    ★ {{ c[4] }}<br>
+    {{ c[5] }}<br>
+
+    <a href="/edit/{{ c[0] }}">編集</a>
+    <a href="/delete/{{ c[0] }}">削除</a>
+  </li>
 {% endfor %}
 </ul>

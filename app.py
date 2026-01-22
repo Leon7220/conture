@@ -1,72 +1,94 @@
 from flask import Flask, render_template, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
+import sqlite3
 
 app = Flask(__name__)
+DB_NAME = "contents.db"
 
-user = os.getenv("DB_USER")
-password = os.getenv("DB_PASSWORD")
-host = os.getenv("DB_HOST")
-dbname = os.getenv("DB_NAME")
 
-app.config["SQLALCHEMY_DATABASE_URI"] = \
-    f"postgresql+psycopg2://flaskuser:flaskpass@localhost:5432/contents_db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+def get_db():
+    return sqlite3.connect(DB_NAME)
 
-db = SQLAlchemy(app)
 
-class Content(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100))
-    type = db.Column(db.String(20))
-    status = db.Column(db.String(20))
-    rating = db.Column(db.Integer)
-    comment = db.Column(db.Text)
+# 初期化（テーブル作成）
+with get_db() as conn:
+    conn.execute("""
+    CREATE TABLE IF NOT EXISTS contents (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        type TEXT,
+        status TEXT,
+        rating INTEGER,
+        comment TEXT
+    )
+    """)
+
 
 @app.route("/")
 def index():
-    contents = Content.query.all()
+    conn = get_db()
+    contents = conn.execute("SELECT * FROM contents").fetchall()
+    conn.close()
     return render_template("index.html", contents=contents)
+
 
 @app.route("/add", methods=["GET", "POST"])
 def add():
     if request.method == "POST":
-        content = Content(
-            title=request.form["title"],
-            type=request.form["type"],
-            status=request.form["status"],
-            rating=request.form["rating"],
-            comment=request.form["comment"]
+        title = request.form["title"]
+        type_ = request.form["type"]
+        status = request.form["status"]
+        rating = request.form["rating"]
+        comment = request.form["comment"]
+
+        conn = get_db()
+        conn.execute(
+            "INSERT INTO contents (title, type, status, rating, comment) VALUES (?, ?, ?, ?, ?)",
+            (title, type_, status, rating, comment)
         )
-        db.session.add(content)
-        db.session.commit()
-        return redirect("/")
+        conn.commit()
+        conn.close()
+        return redirect(url_for("index"))
+
     return render_template("add.html")
+
 
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
 def edit(id):
-    content = Content.query.get(id)
+    conn = get_db()
+
     if request.method == "POST":
-        content.title = request.form["title"]
-        content.type = request.form["type"]
-        content.status = request.form["status"]
-        content.rating = request.form["rating"]
-        content.comment = request.form["comment"]
-        db.session.commit()
-        return redirect("/")
+        title = request.form["title"]
+        type_ = request.form["type"]
+        status = request.form["status"]
+        rating = request.form["rating"]
+        comment = request.form["comment"]
+
+        conn.execute("""
+        UPDATE contents
+        SET title=?, type=?, status=?, rating=?, comment=?
+        WHERE id=?
+        """, (title, type_, status, rating, comment, id))
+
+        conn.commit()
+        conn.close()
+        return redirect(url_for("index"))
+
+    content = conn.execute(
+        "SELECT * FROM contents WHERE id=?", (id,)
+    ).fetchone()
+    conn.close()
+
     return render_template("edit.html", content=content)
+
 
 @app.route("/delete/<int:id>")
 def delete(id):
-    content = Content.query.get(id)
-    db.session.delete(content)
-    db.session.commit()
-    return redirect("/")
+    conn = get_db()
+    conn.execute("DELETE FROM contents WHERE id=?", (id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for("index"))
+
 
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)
