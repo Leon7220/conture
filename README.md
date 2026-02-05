@@ -1,64 +1,111 @@
-# Contents Record App
+# 視聴・プレイ記録リマインダー（Flask CRUD App）
 
-## 概要
-ゲーム・アニメなどの視聴／プレイ履歴を管理するWebアプリケーション。
+アニメ・ゲームなどの視聴／プレイ履歴を記録・管理するための  
+シンプルな CRUD Web アプリケーションです。
+
+Flask + SQLite3 を用いて実装しています。
+
+---
+
+## 機能概要
+
+- 作品の追加（Create）
+- 作品一覧の表示（Read）
+- 作品情報の編集（Update）
+- 作品の削除（Delete）
+- 評価は ★1?★5 の5段階評価
+- 状態管理（todo / doing / done）
+
+---
 
 ## 使用技術
-- Python
+
+- Python 3.x
 - Flask
-- PostgreSQL
-- SQLAlchemy
+- SQLite3
+- HTML / CSS (Jinja2)
 
-## 機能
-- コンテンツの登録（Create）
-- 一覧表示（Read）
-- 編集（Update）
-- 削除（Delete）
+---
 
-## データベース
-本アプリケーションでは PostgreSQL を用いた
-リレーショナルデータベース（RDB）を使用している。
-
-## 実行方法
-1. Python をインストール
-2. 必要なライブラリをインストール
-3. app.py を実行
-
-
-
-## システム構成
-
-クライアント
-
-Webブラウザ（PC）
-
-ユーザーが作品の登録・閲覧・編集・削除を行う
-
-アプリケーション層
-
-Python製Webフレームワーク Flask を使用
-
-HTTPリクエストを受け取り、CRUD処理を制御する
-
-データベース層
-
-RDBとして PostgreSQL を使用
-
-視聴・プレイ履歴データを永続的に保存する
+## ディレクトリ構成
+.
+├── app.py
+├── contents.db # 初回起動時に自動生成
+├── requirements.txt
+├── README.md
+├── static/
+│ └── style.css
+└── templates/
+├── index.html
+├── add.html
+└── edit.html
 
 
-##処理の流れ
+---
 
-ユーザーがWebブラウザから操作を行う
+## セットアップ手順
 
-リクエストがFlaskアプリケーションに送信される
+### 1. リポジトリをクローン
 
-FlaskがPostgreSQLに対してデータの登録・取得・更新・削除を行う
+```bash
+git clone <GitHubリポジトリURL>
+cd <リポジトリ名>
+### 2．仮想環境(任意)
+python -m venv venv
+source venv/bin/activate   # Windowsは venv\Scripts\activate
+### 3. ライブラリのインストール
+pip install -r requirements.txt
 
-処理結果がHTMLとしてWebブラウザに返却される
+## データベースについて
+SQLite3 を使用
+
+app.py 起動時に以下のテーブルが自動作成されます
+
+CREATE TABLE contents (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  type TEXT,
+  status TEXT,
+  rating INTEGER,
+  comment TEXT
+);
+※ 事前に DB を作成する必要はありません。
+
+##アプリケーションの起動方法
+python app.py
+ブラウザで以下にアクセス
+http://127.0.0.1:5000/
 
 
-##設計方針
 
-本システムは、各層の役割を分離することで
-保守性・拡張性を考慮した構成として設計している。
+## データベース初期化手順
+
+本アプリケーションでは SQLite を使用しています。
+特別な DB 作成コマンドは不要で、アプリ起動時に自動で初期化されます。
+
+### 使用DB
+- SQLite
+- DBファイル名：`contents.db`
+
+### 初期化方法
+
+##1. 必要なライブラリをインストールします。
+
+```bash
+pip install -r requirements.txt
+
+##2. Flask アプリを起動します。
+python app.py
+
+##3. 初回起動時に以下のテーブルが自動で作成されます。
+CREATE TABLE contents (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    type TEXT,
+    status TEXT,
+    rating INTEGER,
+    comment TEXT
+);
+
+##4. ブラウザで以下にアクセスします。
+http://127.0.0.1:5000
