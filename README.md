@@ -16,6 +16,12 @@ Flask + SQLite3 を用いて実装しています。
 - 評価は ★1?★5 の5段階評価
 - 状態管理（todo / doing / done）
 
+## デモ動画
+
+本アプリケーションの動作確認用デモ動画は以下のファイルに含まれています。
+
+- `demo.mp4`
+
 ---
 
 ## 使用技術
@@ -28,19 +34,18 @@ Flask + SQLite3 を用いて実装しています。
 ---
 
 ## ディレクトリ構成
-.
-├── app.py
-├── contents.db # 初回起動時に自動生成
-├── requirements.txt
-├── README.md
+project/
+├── app.py           # Flaskアプリ本体
+├── contents.db      # SQLiteデータベース（初回起動時に自動生成）
+├── requirements.txt # 使用ライブラリ一覧
+├── README.md        # 本ファイル
+├── demo.mp4         # 動作確認用デモ動画
 ├── static/
-│ └── style.css
+│ └── style.css     # 画面デザイン用CSS
 └── templates/
-├── index.html
-├── add.html
-└── edit.html
-
-
+├── index.html       # 一覧表示画面
+├── add.html         # 新規追加画面
+└── edit.html        # 編集画面
 ---
 
 ## セットアップ手順
