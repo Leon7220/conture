@@ -34,6 +34,7 @@ Flask + SQLite3 を用いて実装しています。
 ---
 
 ## ディレクトリ構成
+```
 project/
 ├── app.py           # Flaskアプリ本体
 ├── contents.db      # SQLiteデータベース（初回起動時に自動生成）
